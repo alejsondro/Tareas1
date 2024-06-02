@@ -11,7 +11,15 @@ document.addEventListener('DOMContentLoaded', function() {
       let errol = false;
       let vacios = 0; 
       const condicion = /^[1-7]{1}(\.[0-9]{1})?$/; 
-
+      /*- `^` : Este es el ancla de inicio. Significa que cualquier coincidencia debe comenzar al inicio del string.
+      - `[1-9]` : Esto busca exactamente un dígito entre 1 y 9 al inicio del string.
+      - `(\.[0-9]{1,2})?` : Esto busca un punto decimal seguido por entre 1 y 2 dígitos, pero todo el grupo es opcional debido al `?` al final. 
+         Esto significa que puede haber un punto decimal seguido por 1 o 2 dígitos, o no puede haber nada en absoluto.
+      - `$` : Este es el ancla de fin. Significa que cualquier coincidencia debe terminar al final del string.
+      -  Por lo tanto, en resumen, esta expresión regular coincide con un string que comienza con un dígito entre 1 y 9, 
+         seguido opcionalmente por un punto decimal y entre 1 y 2 dígitos, y no tiene nada más después de eso. Esencialmente, 
+         está buscando un número que tenga exactamente un dígito antes del punto decimal y entre 1 y 2 dígitos después del punto decimal, 
+         pero el punto decimal y los dígitos después de él son opcionales.*/
       arrayInputs.forEach(indice => { 
          nota = String(indice.value.trim());
          if (condicion.test(nota)) {
@@ -54,22 +62,6 @@ document.addEventListener('DOMContentLoaded', function() {
          console.log("Error fuera de control en el calculo");
          document.getElementById("resultado").placeholder = "Error en el calculo fuera del ciclo foreach.";
       }
-   }
-
-   function validarNota(cadena) {
-      // expreision regualar para validar la nota
-    const condicion = /^[1-7]{1}(\.[0-9]{1})?$/; 
-    console.log('Validando nota con la variable condicion de tipo', typeof condicion);
-    return condicion.test(cadena);
-    /*- `^` : Este es el ancla de inicio. Significa que cualquier coincidencia debe comenzar al inicio del string.
-      - `[1-9]` : Esto busca exactamente un dígito entre 1 y 9 al inicio del string.
-      - `(\.[0-9]{1,2})?` : Esto busca un punto decimal seguido por entre 1 y 2 dígitos, pero todo el grupo es opcional debido al `?` al final. 
-         Esto significa que puede haber un punto decimal seguido por 1 o 2 dígitos, o no puede haber nada en absoluto.
-      - `$` : Este es el ancla de fin. Significa que cualquier coincidencia debe terminar al final del string.
-      -  Por lo tanto, en resumen, esta expresión regular coincide con un string que comienza con un dígito entre 1 y 9, 
-         seguido opcionalmente por un punto decimal y entre 1 y 2 dígitos, y no tiene nada más después de eso. Esencialmente, 
-         está buscando un número que tenga exactamente un dígito antes del punto decimal y entre 1 y 2 dígitos después del punto decimal, 
-         pero el punto decimal y los dígitos después de él son opcionales.*/
    }
 
    function limpiarNotas()   {
