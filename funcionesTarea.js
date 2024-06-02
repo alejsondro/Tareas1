@@ -10,9 +10,11 @@ document.addEventListener('DOMContentLoaded', function() {
       let nota = ''; 
       let errol = false;
       let vacios = 0; 
+      const condicion = /^[1-7]{1}(\.[0-9]{1})?$/; 
+
       arrayInputs.forEach(indice => { 
          nota = String(indice.value.trim());
-         if (validarNota(nota))   {
+         if (condicion.test(nota)) {
             if (Number.isInteger(Number(nota))) {  
                console.log(`Felicidades (${nota}) ... es un entero valido`);
                suma += nota =Number(nota);
@@ -24,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }  else if ((Number(nota) % 1 != 0) && Number(nota) > 7)   {  
                console.log('Cuidado es un coma flotante mayor a 7 y menor a 8');
                document.getElementById(indice.id).value = "";
-               document.getElementById(indice.id).placeholder = "Ingrese un valor menor a 7.";
+               document.getElementById(indice.id).placeholder = "Ingrese numero entre 1 y 7";
                errol = true;
             } 
          } else if (nota === "") { // solo es para especificar un mensaje, si es que todas las entradas estan vacias
@@ -36,17 +38,17 @@ document.addEventListener('DOMContentLoaded', function() {
          } else  {
             console.log("Error fuera de control en el calculo en ciclo foreach");
             document.getElementById(indice.id).value = ''; 
-            document.getElementById(indice.id).placeholder = "Ingrese solo un valor entre 1 y 7.";
+            document.getElementById(indice.id).placeholder = "Ingrese numero entre 1 y 7";
             errol = true;
          }              
       });
       if(errol === true && vacios === 4) {
          document.getElementById("resultado").placeholder = "No se ingresaron notas.";
       } else if (errol === true && vacios < 4) {
-            document.getElementById("resultado").placeholder = "Ingrese adecuadamente las notas.";
+            document.getElementById("resultado").placeholder = "Ingrese bien todas las notas.";
       } else if (errol === false && vacios > 0) {
          document.getElementById("resultado").placeholder = "Algunas notas faltan.";
-      } else if (errol === false && nada === 0) {
+      } else if (errol === false && vacios === 0) {
          document.getElementById("resultado").placeholder = `Tu promedio es un ${(suma/arrayInputs.length).toFixed(1)}` ; 
       } else {
          console.log("Error fuera de control en el calculo");
