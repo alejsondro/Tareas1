@@ -7,14 +7,14 @@ document.addEventListener('DOMContentLoaded', function() {
    function calcularNota() {
       const arrayInputs = document.querySelectorAll(".especial"); 
       let suma = 0;
-      let nota = 0;
+      let nota = ''; 
       let elol = false;
       let nada = 0; 
       arrayInputs.forEach(indice => { 
-         nota = indice.value.trim();
+         nota = String(indice.value.trim());
          if (validarNota(nota))   {
             if (Number.isInteger(Number(nota))) {  
-               console.log('Felicidades ... es un entero valido')
+               console.log(`Felicidades (${nota}) ... es un entero valido`);
                suma += nota =Number(nota);
                document.getElementById(indice.id).value = nota; // el motor de JS convierte el valor numero a string
             }  else if (Number(nota) % 1 != 0 && Number(nota) <= 7)   {  
@@ -28,24 +28,25 @@ document.addEventListener('DOMContentLoaded', function() {
                elol = true;
             } 
          } else if (nota === "") { // solo es para especificar un mensaje, si es que todas las entradas estan vacias
-            console.log("No se ingreso ningun valor");
+            console.log("Error No se ingreso valor");
             document.getElementById(indice.id).value = ''; 
             document.getElementById(indice.id).placeholder = `Ingrese ${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
             nada += 1;
          } else  {
-            console.log("Diablos! ERROR al convertir a entero o coma flotante");
+            console.log("Diablos! ERROR al convertir a entero u coma flotante");
             document.getElementById(indice.id).value = ''; 
-            document.getElementById(indice.id).placeholder = "Ingrese un valor entre 1 y 7.";
+            document.getElementById(indice.id).placeholder = "Ingrese solo un valor entre 1 y 7.";
             elol = true;
-         }            
+         }              
       });
-
-      if (nada == 4) {
+      if (nada === 4) {
          document.getElementById("resultado").placeholder = "No se ingresaron notas.";
-      } else if (elol == false) { 
+      } else if(nada < 4 && nada >= 1) {
+         document.getElementById("resultado").placeholder = "Algunas notas no se ingresaron.";
+      } else if (nada <4 && elol == true) {
+         document.getElementById("resultado").placeholder = 'Ingrese adecuadamente las notas.'; 
+      } else if (nada === 0 && elol === false) {
          document.getElementById("resultado").placeholder = `Tu promedio es un ${(suma/arrayInputs.length).toFixed(1)}` ; 
-      } else if (elol == true) {
-         document.getElementById("resultado").placeholder = 'Error al calcular promedio'; 
       }
    }
 
