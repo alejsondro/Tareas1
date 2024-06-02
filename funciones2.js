@@ -7,54 +7,52 @@ document.addEventListener('DOMContentLoaded', function() {
    function calcularNota() {
       const arrayInputs = document.querySelectorAll(".especial"); 
       let suma = 0;
+      let nota = 0;
       let elol = false;
       let nada = 0; 
       arrayInputs.forEach(indice => { 
-         let nota = indice.value.trim();
-         if (validarNota(nota)) {
-            console.log('Cumple el formato de string de nota');
-            nota = Number(nota);
-            if (Number.isInteger(nota)) {
-               console.log('Es un entero');
-               //document.getElementById(indice.id).value = String(nota);;
-               suma += nota;
-            }  else if (!Number.isInteger(nota) && nota % 1 != 0) {
-                  console.log('Es un decimal');
-                  if (nota > 7) {
-                     console.log('se ingreso  mayor que 7');
-                     document.getElementById(indice.id).value = "";
-                     document.getElementById(indice.id).placeholder = "Ingresa valor entre <1 y 7>.";
-                     elol = true;
-                  } else if ( nota < 0 ) {
-                     console.log('Ingresa un valor matoy que 1'); 
-                  }  else {
-                     suma += nota;
-               }
-            }
-         } else { // si no cumple con la validacion del string de notas
-               if (nota === "") {
-                  console.log("Ingresa nada");
-                  nada += 1;
-                  document.getElementById(indice.id).placeholder =  `Ingresa ${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
-               } else {
-                  console.log("error de formato");
-                  document.getElementById(indice.id).value = "";
-                  document.getElementById(indice.id).placeholder =  'formato erroneo en ' + `${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
-                  elol = true;
-               }
-         }
+         nota = indice.value.trim();
+         if (validarNota(nota))   {
+            if (Number.isInteger(Number(nota))) {  
+               console.log('Felicidades ... es un entero valido')
+               suma += nota =Number(nota);
+               document.getElementById(indice.id).value = nota; // el motor de JS convierte el valor numero a string
+            }  else if (Number(nota) % 1 != 0 && Number(nota) <= 7)   {  
+               console.log('Felicidades... es un coma flotante valido');
+               suma += nota =Number(nota);
+               document.getElementById(indice.id).value = nota; // el motor de JS convierte el valor numero a string
+            }  else if ((Number(nota) % 1 != 0) && Number(nota) > 7)   {  
+               console.log('Cuidado es un coma flotante mayor a 7 y menor a 8');
+               document.getElementById(indice.id).value = "";
+               document.getElementById(indice.id).placeholder = "Ingrese un valor menor o igual a 7.";
+               elol = true;
+            } 
+         } else if (nota === "") { // solo es para especificar un mensaje, si es que todas las entradas estan vacias
+            console.log("No se ingreso ningun valor");
+            document.getElementById(indice.id).value = ''; 
+            document.getElementById(indice.id).placeholder = `Ingrese ${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
+            nada += 1;
+         } else  {
+            console.log("Diablos! ERROR al convertir a entero o coma flotante");
+            document.getElementById(indice.id).value = ''; 
+            document.getElementById(indice.id).placeholder = "Ingrese un valor entre 1 y 7.";
+            elol = true;
+         }            
       });
+
       if (nada == 4) {
-         document.getElementById("resultado").placeholder = "Ingresa al menos una nota";
-      } else if (elol != true) { 
-         document.getElementById("resultado").placeholder = `tu promedio es ${(suma/arrayInputs.length).toFixed(1)}` ; 
-      } else if (elol === true) {
-         document.getElementById("resultado").placeholder = 'No se puede calcular la nota'; 
+         document.getElementById("resultado").placeholder = "No se ingresaron notas.";
+      } else if (elol == false) { 
+         document.getElementById("resultado").placeholder = `Tu promedio es un ${(suma/arrayInputs.length).toFixed(1)}` ; 
+      } else if (elol == true) {
+         document.getElementById("resultado").placeholder = 'Error al calcular promedio'; 
       }
-  }
-   
+   }
+
    function validarNota(cadena) {
+      // expreision regualar para validar la nota
     const condicion = /^[1-7]{1}(\.[0-9]{1})?$/; 
+    console.log('Validando nota con la variable condicion de tipo', typeof condicion);
     return condicion.test(cadena);
     /*- `^` : Este es el ancla de inicio. Significa que cualquier coincidencia debe comenzar al inicio del string.
       - `[1-9]` : Esto busca exactamente un dígito entre 1 y 9 al inicio del string.
@@ -68,10 +66,10 @@ document.addEventListener('DOMContentLoaded', function() {
    }
 
    function limpiarNotas()   {
-    const arrayLimpieza = document.querySelectorAll(".especial");
+      const arrayLimpieza = document.querySelectorAll(".especial");
       arrayLimpieza.forEach(i => {  
          document.getElementById(i.id).value = "";
-         document.getElementById(i.id).placeholder = `Ingresa ${String(i.id).slice(0,-1)+' '+String(i.id).slice(-1)}`; 
+         document.getElementById(i.id).placeholder = `Ingrese ${String(i.id).slice(0,-1)+' '+String(i.id).slice(-1)}`; 
          console.log('Se limpiaron los inputs');
       });
       document.getElementById("resultado").placeholder ="Promedio de Notas v1.0";
