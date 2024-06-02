@@ -1,6 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-   
-         
   let botonCalcular = document.getElementById("calcular");
   let botonLimpiar = document.getElementById("limpiar");
   botonCalcular.addEventListener("click", calcularNota);
@@ -10,6 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const arrayInputs = document.querySelectorAll(".especial"); 
       let suma = 0;
       let elol = false;
+      let nada = 0; 
       arrayInputs.forEach(indice => { 
          let nota = indice.value.trim();
          if (validarNota(nota)) {
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
             nota = Number(nota);
             if (Number.isInteger(nota)) {
                console.log('Es un entero');
-               document.getElementById(indice.id).value = String(nota);;
+               //document.getElementById(indice.id).value = String(nota);;
                suma += nota;
             }  else if (!Number.isInteger(nota) && nota % 1 != 0) {
                   console.log('Es un decimal');
@@ -32,25 +31,26 @@ document.addEventListener('DOMContentLoaded', function() {
                      suma += nota;
                }
             }
-         } else { // si no cumple con la validacion
+         } else { // si no cumple con la validacion del string de notas
                if (nota === "") {
                   console.log("Ingresa nada");
+                  nada += 1;
                   document.getElementById(indice.id).placeholder =  `Ingresa ${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
-                  elol = true;
                } else {
-                  console.log("Ingresa valor entre <1 y 7>.");
-                  document.getElementById(indice.id).placeholder =  'Ingresa valor entre <1 y 7>';
+                  console.log("error de formato");
+                  document.getElementById(indice.id).value = "";
+                  document.getElementById(indice.id).placeholder =  'No cumple con el formato de' + `${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
                   elol = true;
                }
          }
       });
-
-      if (elol != true) { 
+      if (nada === 4) {
+         document.getElementById("resultado").placeholder = "Ingresa al menos una nota";
+      } else if (elol != true) { 
          document.getElementById("resultado").placeholder = `tu promedio es ${(suma/arrayInputs.length).toFixed(1)}` ; 
       } else if (elol === true) {
          document.getElementById("resultado").placeholder = 'No se puede calcular la nota'; 
       }
-
   }
    
    function validarNota(cadena) {
@@ -72,8 +72,9 @@ document.addEventListener('DOMContentLoaded', function() {
       arrayLimpieza.forEach(i => {  
          document.getElementById(i.id).value = "";
          document.getElementById(i.id).placeholder = `Ingresa ${String(i.id).slice(0,-1)+' '+String(i.id).slice(-1)}`; 
+         console.log('Se limpiaron los inputs');
       });
-      document.getElementById("resultado").placeholder ="Calcula Promedio";
+      document.getElementById("resultado").placeholder ="Promedio de Notas v1.0";
    }   
    
    function generarTabla(){
