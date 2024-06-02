@@ -8,8 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
       const arrayInputs = document.querySelectorAll(".especial"); 
       let suma = 0;
       let nota = ''; 
-      let elol = false;
-      let nada = 0; 
+      let errol = false;
+      let vacios = 0; 
       arrayInputs.forEach(indice => { 
          nota = String(indice.value.trim());
          if (validarNota(nota))   {
@@ -24,29 +24,33 @@ document.addEventListener('DOMContentLoaded', function() {
             }  else if ((Number(nota) % 1 != 0) && Number(nota) > 7)   {  
                console.log('Cuidado es un coma flotante mayor a 7 y menor a 8');
                document.getElementById(indice.id).value = "";
-               document.getElementById(indice.id).placeholder = "Ingrese un valor menor o igual a 7.";
-               elol = true;
+               document.getElementById(indice.id).placeholder = "Ingrese un valor menor a 7.";
+               errol = true;
             } 
          } else if (nota === "") { // solo es para especificar un mensaje, si es que todas las entradas estan vacias
             console.log("Error No se ingreso valor");
             document.getElementById(indice.id).value = ''; 
             document.getElementById(indice.id).placeholder = `Ingrese ${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
-            nada += 1;
+            vacios += 1;
+            errol = true;
          } else  {
-            console.log("Diablos! ERROR al convertir a entero u coma flotante");
+            console.log("Error fuera de control en el calculo en ciclo foreach");
             document.getElementById(indice.id).value = ''; 
             document.getElementById(indice.id).placeholder = "Ingrese solo un valor entre 1 y 7.";
-            elol = true;
+            errol = true;
          }              
       });
-      if (nada === 4) {
+      if(errol === true && vacios === 4) {
          document.getElementById("resultado").placeholder = "No se ingresaron notas.";
-      } else if(nada < 4 && nada >= 1) {
-         document.getElementById("resultado").placeholder = "Algunas notas no se ingresaron.";
-      } else if (nada <4 && elol == true) {
-         document.getElementById("resultado").placeholder = 'Ingrese adecuadamente las notas.'; 
-      } else if (nada === 0 && elol === false) {
+      } else if (errol === true && vacios < 4) {
+            document.getElementById("resultado").placeholder = "Ingrese adecuadamente las notas.";
+      } else if (errol === false && vacios > 0) {
+         document.getElementById("resultado").placeholder = "Algunas notas faltan.";
+      } else if (errol === false && nada === 0) {
          document.getElementById("resultado").placeholder = `Tu promedio es un ${(suma/arrayInputs.length).toFixed(1)}` ; 
+      } else {
+         console.log("Error fuera de control en el calculo");
+         document.getElementById("resultado").placeholder = "Error en el calculo fuera del ciclo foreach.";
       }
    }
 
