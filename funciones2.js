@@ -39,12 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
                } else {
                   console.log("error de formato");
                   document.getElementById(indice.id).value = "";
-                  document.getElementById(indice.id).placeholder =  'No cumple con el formato de' + `${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
+                  document.getElementById(indice.id).placeholder =  'formato erroneo en ' + `${String(indice.id).slice(0,-1)+' '+String(indice.id).slice(-1)}`;
                   elol = true;
                }
          }
       });
-      if (nada === 4) {
+      if (nada == 4) {
          document.getElementById("resultado").placeholder = "Ingresa al menos una nota";
       } else if (elol != true) { 
          document.getElementById("resultado").placeholder = `tu promedio es ${(suma/arrayInputs.length).toFixed(1)}` ; 
